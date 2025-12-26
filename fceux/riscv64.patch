@@ -1,9 +1,9 @@
 diff --git PKGBUILD PKGBUILD
-index de5e123..ea37d09 100644
+index ffa9833..13dc071 100644
 --- PKGBUILD
 +++ PKGBUILD
 @@ -12,11 +12,14 @@ license=(GPL-2.0-or-later)
- depends=(gd lua minizip qt5-base sdl2)
+ depends=(gd libarchive lua minizip qt6-base sdl2)
  makedepends=(cmake git glu mesa-libgl setconf scons)
  optdepends=('ffmpeg: for recording')
 -source=("git+$url#tag=v$pkgver")
@@ -11,11 +11,20 @@ index de5e123..ea37d09 100644
 +source=("git+$url#tag=v$pkgver"
 +        'timestamp.patch')
 +b2sums=('df1b8706f3639c52ec5905a542052ee0eb7c5a727c9ee27af7c9f53b2b9f97b0445c6c6ff9f9504cef51a90cddc97b08b7f92ee7882de1bfb2baf879eac613c1'
-+        '31c2123515c776a195877dd19357b98dc1575e208b27cb9622df02325a3a9a8be96e824a309bde029f04152ea01828f5f18ef38f4940fc87bca0285141245deb')
++        'f711fc790923cf12b57ecd6d40b2229b0cad787cf6a22b63119d90bae6d4c80ce3dcf920b5385a20485c7439ac1e1bdb745392d9a222fc38b16987f5a15bad93')
  
  prepare() {
    cd $pkgname
-+  patch -p1 < ../timestamp.patch
++  patch -p0 < ../timestamp.patch
    sed -i 's/-interim git//g' src/version.h
    setconf scripts/genGitHdr.sh GIT_URL "'""${source:4:34}""'"
    setconf scripts/genGitHdr.sh GIT_REV "${source#*=}"
+@@ -30,7 +33,7 @@ build() {
+     -D CMAKE_INSTALL_PREFIX=/usr \
+     -D QT6=ON \
+     -S $pkgname
+-  make -C build
++  make -C build 
+ }
+ 
+ package() {
